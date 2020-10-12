@@ -72,6 +72,11 @@ h2 {
     font-weight: bold;
 }
 
+.bit-pokeball {
+    height: 100px;
+    width: 100px;
+}
+
 .gutter-right {
     margin-right: 20px;
 }
