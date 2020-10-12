@@ -20,7 +20,7 @@ Results page:
     -'New Game' button
         -Brings you back to main page
         -resets
-            -let Pokeballs = 20;
+            -let Pokeballs = 10;
             -let Times Encountered = 0;
             -let Times Captured = 0;
     -'All Time' sections showing all time data for each Pokemon
