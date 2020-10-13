@@ -30,11 +30,30 @@ body {
 
 :checked + img {
     border: solid 10px lightskyblue;
+    border-radius: 50px;
 } 
 
 .poke {
     display: flex;
     flex-direction: row;
+    margin: 0;
+    text-align: center;
+    display: block;
+}
+
+.poke-poke {
+    width: 200px;
+}
+
+.poke-text {
+    align-items: center;
+}
+
+.next-button {
+    background-color: rgb(198, 234, 255);
+    font-family: monospace;
+    font-size: 1.5em;
+    border-radius: 10px;
 }
 
 main {
