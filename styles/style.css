@@ -32,6 +32,11 @@ body {
     border: solid 10px lightskyblue;
 } 
 
+.poke {
+    display: flex;
+    flex-direction: row;
+}
+
 main {
     display: flex;
     flex-direction: column;
@@ -132,3 +137,7 @@ footer {
     }
 
   }
+
+#pokemon {
+    visibility: hidden;
+}
