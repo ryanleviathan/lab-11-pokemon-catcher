@@ -28,6 +28,10 @@ body {
     background-color: var(--color2);
 }
 
+:checked + img {
+    border: solid 10px lightskyblue;
+} 
+
 main {
     display: flex;
     flex-direction: column;

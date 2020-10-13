@@ -25,9 +25,31 @@
                 An Encounter!!!
             </h2>
             <div>
-                <button type="radio" id="poke-button"></button>
-                <button type="radio" id="poke-button"></button>
-                <button type="radio" id="poke-button"></button>
+                <label>
+                    <input type="radio" id="pokemon" name="pokemon">
+                    <img />
+                    <summary>Times Encountered: <span type="number" id="encounters">0</span></summary>
+                    <summary>Times Captured: <span type="number" id="captures">0</span></summary>
+                </label>
+                <label>
+                    <input type="radio" id="pokemon" name="pokemon">
+                    <img />
+                    <summary>Times Encountered: <span type="number" id="encounters">0</span></summary>
+                    <summary>Times Captured: <span type="number" id="captures">0</span></summary>
+                </label>
+                <label>
+                    <input type="radio" id="pokemon" name="pokemon">
+                    <img />
+                    <summary>Times Encountered: <span type="number" id="encounters">0</span></summary>
+                    <summary>Times Captured: <span type="number" id="captures">0</span></summary>
+                </label>
+            </div>
+            <div>
+                <summary>Pokeballs Left: <span type="number" id="pokeballs">10</span></summary>
+            </div>
+            <div id="next">
+                <div id="next-encounter"></div>
+                <button>Next Encounter!</button>
             </div>
         </section>
     </main>
