@@ -1,4 +1,4 @@
-import { rawPokemonData } from './pokemon.js';
+import { rawPokemonData, POKEMON } from './pokemon.js';
 
 const radios = document.querySelectorAll('input');
 const images = document.querySelectorAll('.poke-poke');
@@ -10,7 +10,7 @@ const timesCapturedSpan = document.querySelectorAll('.captures');
 
 let pokeballs = 10;
 
-// obj[pokemon.id] = obj[pokemon.id] + 1
+// obj[pokemon.id] = obj[pokemon.id] + 1?
 
 function findById(someArray, someId) {
     for (let i = 0; i < someArray.length; i++) {
@@ -39,6 +39,7 @@ function createPokemon() {
     }
 
     return [pokemon1, pokemon2, pokemon3];
+    // Save encountered to local storage with saveToLocalStorage?
 }
 
 function renderPokemon(pokemon) {
@@ -49,8 +50,6 @@ function renderPokemon(pokemon) {
     images[0].src = pokemon[0].url_image;
     images[1].src = pokemon[1].url_image;
     images[2].src = pokemon[2].url_image;
-
-    // saveToLocalStorage(pokemon.id);
 }
 
 function renderEncounterSpan(pokemon) {
@@ -79,7 +78,6 @@ createAndRender();
 
 nextButton.addEventListener('click', () => {
     // Update render
-    // Call saveToLocalStorage to save encounters to local storage?
     createAndRender();
 
     --pokeballs;
@@ -96,6 +94,24 @@ nextButton.addEventListener('click', () => {
     }
 
 });
+
+for (let i = 0; i < radios.length; i++) {
+    radios[i].addEventListener('click', (e) => {
+
+        nextDiv.classList.remove('hidden');
+
+        for (let i = 0; i < radios.length; i++) {
+            radios[i].disabled = true;
+            images[i].style.opacity = .5;
+        }
+
+        const id = e.target.getAttribute('pid');
+        const pokemon = findById(rawPokemonData, Number(id));
+
+        incrementCapture(pokemon);
+        // Save captured to local storage with saveToLocalStorage?
+    });
+}
 
 function saveToLocalStorage(key, value) {
     let stringyData = JSON.stringify(value);
@@ -115,23 +131,4 @@ function incrementCapture(pokemon) {
     pokemon.capture = pokemon.capture ? pokemon.capture + 1 : 1;
 
     return pokemon;
-}
-
-
-for (let i = 0; i < radios.length; i++) {
-    radios[i].addEventListener('click', (e) => {
-
-        nextDiv.classList.remove('hidden');
-
-        for (let i = 0; i < radios.length; i++) {
-            radios[i].disabled = true;
-            images[i].style.opacity = .5;
-        }
-
-        const id = e.target.getAttribute('pid');
-        const pokemon = findById(rawPokemonData, Number(id));
-
-        incrementCapture(pokemon);
-        // Save captured to local storage with saveToLocalStorage?
-    });
 }
