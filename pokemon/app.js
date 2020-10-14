@@ -37,15 +37,21 @@ function createPokemon() {
         pokemon2 = getRandomPokemon(rawPokemonData);
         pokemon3 = getRandomPokemon(rawPokemonData);
     }
+    // Save encountered to local storage with saveToLocalStorage?
+    addPokemonToLocalStorage(POKEMON, pokemon1);
+    addPokemonToLocalStorage(POKEMON, pokemon2);
+    addPokemonToLocalStorage(POKEMON, pokemon3);
 
     return [pokemon1, pokemon2, pokemon3];
-    // Save encountered to local storage with saveToLocalStorage?
 }
 
 function renderPokemon(pokemon) {
     radios[0].setAttribute('pid', pokemon[0].id);
+    radios[0].checked = false;
     radios[1].setAttribute('pid', pokemon[1].id);
+    radios[1].checked = false;
     radios[2].setAttribute('pid', pokemon[2].id);
+    radios[2].checked = false;
 
     images[0].src = pokemon[0].url_image;
     images[1].src = pokemon[1].url_image;
@@ -84,7 +90,7 @@ nextButton.addEventListener('click', () => {
     pokeballSpan.textContent = pokeballs;
 
     if (pokeballs === 0) {
-        // store rawPokemonData in local storage
+        // store the altered rawPokemonData in local storage?
         window.location = '../results/index.html';
     }
 
@@ -106,19 +112,18 @@ for (let i = 0; i < radios.length; i++) {
         }
 
         const id = e.target.getAttribute('pid');
-        const pokemon = findById(rawPokemonData, Number(id));
+        const pokemonCap = findById(rawPokemonData, Number(id));
 
-        incrementCapture(pokemon);
-        // Save captured to local storage with saveToLocalStorage?
+        incrementCapture(pokemonCap);
     });
 }
 
-function saveToLocalStorage(key, value) {
-    let stringyData = JSON.stringify(value);
+function addPokemonToLocalStorage() {
+    let stringyPokemon = JSON.stringify(rawPokemonData);
 
-    localStorage.setItem(key, stringyData);
+    localStorage.setItem(POKEMON, stringyPokemon);
 
-    return JSON.parse(stringyData);
+    return stringyPokemon;
 }
 
 function incrementEncounter(pokemon) {
