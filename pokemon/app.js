@@ -2,13 +2,15 @@ import { rawPokemonData } from './pokemon.js';
 
 const radios = document.querySelectorAll('input');
 const images = document.querySelectorAll('.poke-poke');
+const encounterSpan = document.querySelectorAll('.encounters');
 const nextDiv = document.querySelector('#next');
 const nextButton = document.querySelector('button');
 const nextEncounter = document.querySelector('#next-encounter');
+const pokeballSpan = document.getElementById('pokeballs');
+const timesCapturedSpan = document.querySelectorAll('.captures');
 
 let pokeballs = 10;
-let timesEncountered = 0;
-let timesCaptured = 0;
+let selectedPokemon;
 
 function findById(someArray, someId) {
     for (let i = 0; i < someArray.length; i++) {
@@ -26,9 +28,7 @@ function getRandomPokemon(rawPokemonData) {
     return rawPokemonData[index];
 }
 
-function renderPokemon() {
-    const pokemonCapturedArray = [];
-
+function createPokemon() {
     let pokemon1 = getRandomPokemon(rawPokemonData);
     let pokemon2 = getRandomPokemon(rawPokemonData);
     let pokemon3 = getRandomPokemon(rawPokemonData);
@@ -37,20 +37,50 @@ function renderPokemon() {
         pokemon2 = getRandomPokemon(rawPokemonData);
         pokemon3 = getRandomPokemon(rawPokemonData);
     }
-    images[0].src = pokemon1.url_image;
-    images[1].src = pokemon2.url_image;
-    images[2].src = pokemon3.url_image;
 
-    pokemonCapturedArray.push(pokemon1, pokemon2, pokemon3);
-    return pokemonCapturedArray;
+    return [pokemon1, pokemon2, pokemon3];
 }
 
-renderPokemon();
+function renderPokemon(pokemon) {
+    radios[0].setAttribute("pid", pokemon[0].id);
+    radios[1].setAttribute("pid", pokemon[1].id);
+    radios[2].setAttribute("pid", pokemon[2].id);
+
+    images[0].src = pokemon[0].url_image;
+    images[1].src = pokemon[1].url_image;
+    images[2].src = pokemon[2].url_image;
+}
+
+function renderEncounterSpan(pokemon) {
+    encounterSpan[0].textContent = pokemon[0].encounter;
+    encounterSpan[1].textContent = pokemon[1].encounter;
+    encounterSpan[2].textContent = pokemon[2].encounter;
+}
+
+function renderCaptureSpan(pokemon) {
+    timesCapturedSpan[0].textContent = pokemon[0].capture || 0;
+    timesCapturedSpan[1].textContent = pokemon[1].capture || 0;
+    timesCapturedSpan[2].textContent = pokemon[2].capture || 0;
+}
+
+function createAndRender() {
+    const pokemon = createPokemon();
+    pokemon.map(incrementEncounter);
+
+    renderPokemon(pokemon);
+    renderEncounterSpan(pokemon);
+    renderCaptureSpan(pokemon);
+}
+
+// Initialize render
+createAndRender();
 
 nextButton.addEventListener('click', () => {
-    renderPokemon();
+    // Update render
+    createAndRender();
 
-    pokeballs--;
+    --pokeballs;
+    pokeballSpan.textContent = pokeballs;
 
     if (pokeballs === 0) {
         window.location = '../results/index.html';
@@ -63,9 +93,21 @@ nextButton.addEventListener('click', () => {
 
 });
 
+function incrementEncounter(pokemon) {
+    pokemon.encounter = pokemon.encounter ? pokemon.encounter + 1 : 1;
+
+    return pokemon;
+}
+
+function incrementCapture(pokemon) {
+    pokemon.capture = pokemon.capture ? pokemon.capture + 1 : 1;
+
+    return pokemon;
+}
+
 
 for (let i = 0; i < radios.length; i++) {
-    radios[i].addEventListener('change', (e) => {
+    radios[i].addEventListener('click', (e) => {
 
         nextDiv.classList.remove('hidden');
 
@@ -74,74 +116,9 @@ for (let i = 0; i < radios.length; i++) {
             images[i].style.opacity = .5;
         }
 
-        const capturedPokemon = e.target.value;
-        const pokemonInCart = findById(capturedPokemon, pokemonCapturedArray);
+        const id = e.target.getAttribute("pid");
+        const pokemon = findById(rawPokemonData, Number(id));
 
-        pokemonCapturedArray.push(pokemonInCart);
-
-        if (capturedpokemon) {
-            timesCaptured++;
-            nextEncounter.textContent = `${capturedpokemon} has been captured!`;
-            console.log(capturedpokemon);
-        }
+        incrementCapture(pokemon);
     });
 }
-
-
-
-
-
-
-
-
-
-
-// function resultsRedirect() {
-//     if (pokeballs === 0) {
-//         window.location = "../results/index.html"
-//     }
-// }
-
-// function encounterChoice() {
-//     if (pokeballs === 0) {
-//         window.location = "../results/index.html"
-//     }
-//     nextDiv.classList.add('hidden');
-
-//     for (let i = 0; i < radios.length; i++) {
-//         radios[i].disabled = false;
-//         radios[i].checked = false;
-//         images[i].style.opacity = 1;
-//         timesEncountered++;
-//     }
-
-//     let pokemon = getRandomPokemon(rawPokemonData);
-
-//     while (pokemon.id === pokemon.id) {
-//         pokemon = getRandomPokemon(rawPokemonData);
-//     }
-
-//     pokemon.textContent = pokemon.pokemon;
-//     radios.value = pokemon.id;
-//     images.src = pokemon.url_image;
-
-//     for (let i = 0; i < radios.length; i++) {
-//         radios[i].addEventListener('change', (e) => {
-
-//             pokeballs--;
-//             nextDiv.classList.remove('hidden');
-
-//             for (let i = 0; i < radios.length; i++) {
-//                 radios[i].disabled = true;
-//                 images[i].style.opacity = .5;
-//             }
-
-//             const capturedpokemon = e.target.value === pokemon.id;
-
-//             if (capturedpokemon) {
-//                 timesCaptured++;
-//                 nextEncounter.textContent = `${capturedpokemon} has been captured!`;
-//             }
-//         });
-//     }
-//
