@@ -7,7 +7,7 @@ Main page:
         -underneath each Pokemon: 'Times Encountered: ', 'Times Captured: '
     -'Next Encounter' button
         -On click: repeats onLoad sequence, counts down pokeball inventory
-    -'Pokeballs left: ' (cap at 20 throws)
+    -'Pokeballs left: ' (cap at 10 throws)
         -@ 'Pokeballs left: 0', 'Results' button appears, 'Next Encounter' button disappears
 
 Results page:
