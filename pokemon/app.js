@@ -1,4 +1,4 @@
-import { rawPokemonData } from './pokemon.js';
+import { rawPokemonData, POKEMON } from './pokemon.js';
 
 const radios = document.querySelectorAll('input');
 const images = document.querySelectorAll('.poke-poke');
@@ -10,7 +10,7 @@ const timesCapturedSpan = document.querySelectorAll('.captures');
 
 let pokeballs = 10;
 
-// obj[pokemon.id] = obj[pokemon.id] + 1
+// obj[pokemon.id] = obj[pokemon.id] + 1?
 
 function findById(someArray, someId) {
     for (let i = 0; i < someArray.length; i++) {
@@ -37,20 +37,25 @@ function createPokemon() {
         pokemon2 = getRandomPokemon(rawPokemonData);
         pokemon3 = getRandomPokemon(rawPokemonData);
     }
+    // Save encountered to local storage with saveToLocalStorage?
+    addPokemonToLocalStorage(POKEMON, pokemon1);
+    addPokemonToLocalStorage(POKEMON, pokemon2);
+    addPokemonToLocalStorage(POKEMON, pokemon3);
 
     return [pokemon1, pokemon2, pokemon3];
 }
 
 function renderPokemon(pokemon) {
     radios[0].setAttribute('pid', pokemon[0].id);
+    radios[0].checked = false;
     radios[1].setAttribute('pid', pokemon[1].id);
+    radios[1].checked = false;
     radios[2].setAttribute('pid', pokemon[2].id);
+    radios[2].checked = false;
 
     images[0].src = pokemon[0].url_image;
     images[1].src = pokemon[1].url_image;
     images[2].src = pokemon[2].url_image;
-
-    // saveToLocalStorage(pokemon.id);
 }
 
 function renderEncounterSpan(pokemon) {
@@ -79,14 +84,13 @@ createAndRender();
 
 nextButton.addEventListener('click', () => {
     // Update render
-    // Call saveToLocalStorage to save encounters to local storage?
     createAndRender();
 
     --pokeballs;
     pokeballSpan.textContent = pokeballs;
 
     if (pokeballs === 0) {
-        // store rawPokemonData in local storage
+        // store the altered rawPokemonData in local storage?
         window.location = '../results/index.html';
     }
 
@@ -96,27 +100,6 @@ nextButton.addEventListener('click', () => {
     }
 
 });
-
-function saveToLocalStorage(key, value) {
-    let stringyData = JSON.stringify(value);
-
-    localStorage.setItem(key, stringyData);
-
-    return JSON.parse(stringyData);
-}
-
-function incrementEncounter(pokemon) {
-    pokemon.encounter = pokemon.encounter ? pokemon.encounter + 1 : 1;
-
-    return pokemon;
-}
-
-function incrementCapture(pokemon) {
-    pokemon.capture = pokemon.capture ? pokemon.capture + 1 : 1;
-
-    return pokemon;
-}
-
 
 for (let i = 0; i < radios.length; i++) {
     radios[i].addEventListener('click', (e) => {
@@ -129,9 +112,28 @@ for (let i = 0; i < radios.length; i++) {
         }
 
         const id = e.target.getAttribute('pid');
-        const pokemon = findById(rawPokemonData, Number(id));
+        const pokemonCap = findById(rawPokemonData, Number(id));
 
-        incrementCapture(pokemon);
-        // Save captured to local storage with saveToLocalStorage?
+        incrementCapture(pokemonCap);
     });
+}
+
+function addPokemonToLocalStorage() {
+    let stringyPokemon = JSON.stringify(rawPokemonData);
+
+    localStorage.setItem(POKEMON, stringyPokemon);
+
+    return stringyPokemon;
+}
+
+function incrementEncounter(pokemon) {
+    pokemon.encounter = pokemon.encounter ? pokemon.encounter + 1 : 1;
+
+    return pokemon;
+}
+
+function incrementCapture(pokemon) {
+    pokemon.capture = pokemon.capture ? pokemon.capture + 1 : 1;
+
+    return pokemon;
 }
